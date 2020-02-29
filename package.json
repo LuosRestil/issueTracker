@@ -1,0 +1,24 @@
+{
+  "name": "issuetracker",
+  "version": "1.0.0",
+  "description": "Maintenance issue tracker",
+  "main": "server.js",
+  "scripts": {
+    "watch": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "Brian Smith",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.3",
+    "mongodb": "^3.5.4"
+  },
+  "engine": {
+    "node": "12.13.0"
+  }
+}
