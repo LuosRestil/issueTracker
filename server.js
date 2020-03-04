@@ -1,39 +1,30 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const helmet = require("helmet");
-const mongo = require("mongodb").MongoClient;
-const ObjectID = require("mongodb").ObjectID;
+
 require("dotenv").config();
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
-app.use("/public", express.static(process.cwd() + "./public"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+mongoose.connection.on("connected", () => {
+  console.log("Database connction successful!");
+});
 
-mongo.connect(
-  process.env.DB_URI,
-  { useUnifiedTopology: true },
-  (err, client) => {
-    if (err) {
-      console.log(`Database error: ${err}`);
-    } else {
-      console.log("Connected to database.");
+app.use(helmet);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-      let db = client.db(client.dbName);
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("client/build"));
+}
 
-      app.route("/").get((req, res) => {
-        res.sendFile(process.cwd() + "/views/index.html");
-      });
+// ************************
+// ROUTES
+// ************************
 
-      app.route("/:project/").get((req, res) => {
-        res.sendFile(process.cwd() + "/views/index.html");
-      });
-
-      app.listen(process.env.PORT || 8000, function() {
-        console.log("Listening on port " + process.env.PORT);
-      });
-    }
-  }
-);
+app.listen(PORT, console.log(`Express server listening on port ${PORT}`));

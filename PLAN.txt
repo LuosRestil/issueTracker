@@ -1,0 +1,20 @@
+***
+registration/login
+***
+
+***
+front page:
+projects list, form to add new project;
+***
+
+***
+project page:
+form to submit new issue() {
+    id, date/time created, title, text, createdBy(automatic), claimedBy/claim, urgency flags?, close(only available to creator or claimant)
+}, 
+list of issues(styled according to age/urgent)
+***
+
+***
+Corporate version of this may only give user and issue creation privelages to admin, who can send assignments. Front page would be users list of issues and unassigned issues, and only the claimed user could submit close. Add protected route for admin to view each person's assignments.
+***
