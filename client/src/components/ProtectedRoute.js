@@ -5,6 +5,8 @@ const ProtectedRoute = ({
   component: Component,
   logged,
   setLogged,
+  user,
+  support,
   ...rest
 }) => {
   return (
@@ -21,7 +23,15 @@ const ProtectedRoute = ({
             />
           );
         } else {
-          return <Component {...props} logged={logged} setLogged={setLogged} />;
+          return (
+            <Component
+              {...props}
+              logged={logged}
+              setLogged={setLogged}
+              user={user}
+              support={support}
+            />
+          );
         }
       }}
     />

@@ -2,13 +2,11 @@ const passport = require("passport");
 const User = require("../models/user");
 
 passport.serializeUser(function(user, done) {
-  console.log("Serializing user...");
   done(null, user._id);
 });
 
 passport.deserializeUser(function(_id, done) {
   User.findById(_id, function(err, user) {
-    console.log(`Deserialize: ${user}`);
     done(err, user);
   });
 });

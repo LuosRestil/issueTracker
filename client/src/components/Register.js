@@ -21,7 +21,6 @@ function Register(props) {
     fetch("/api/register", options)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         setUsername("");
         setPassword("");
         if (json.error) {
@@ -40,6 +39,7 @@ function Register(props) {
   };
 
   if (redirect.redirect) {
+    console.log("redirecting to login...");
     return (
       <Redirect
         to={{
@@ -49,6 +49,7 @@ function Register(props) {
       />
     );
   } else {
+    console.log("not redirecting to login...");
     return (
       <div>
         <h1>Registration</h1>

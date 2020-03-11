@@ -37,11 +37,11 @@ function Login(props) {
           props.location.state.flashSuccess = "";
           setFlashError(json.error);
         } else if (json.user) {
-          window.localStorage.setItem("qrs", json.user);
+          window.localStorage.setItem("qrs", json._id);
           props.setLogged(true);
           setRedirect({
             redirect: true,
-            path: "/dashboard",
+            path: "/",
             msg: "Login successful!"
           });
         }
@@ -60,7 +60,6 @@ function Login(props) {
   } else {
     return (
       <div>
-        <h1>Login</h1>
         {flashSuccess ? (
           <div className="alert alert-success">{flashSuccess}</div>
         ) : flashError ? (
@@ -68,24 +67,25 @@ function Login(props) {
         ) : flashInfo ? (
           <div className="alert alert-info">{flashInfo}</div>
         ) : null}
+        <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Username</label>
+            <label htmlFor="usernameField">Username</label>
             <input
-              type="username"
+              type="text"
               className="form-control"
-              id="exampleInputEmail1"
+              id="usernameField"
               onChange={e => setUsername(e.target.value)}
               value={username}
               autoFocus
             />
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
+            <label htmlFor="passwordField">Password</label>
             <input
               type="password"
               className="form-control"
-              id="exampleInputPassword1"
+              id="passwordField"
               onChange={e => setPassword(e.target.value)}
               value={password}
             />

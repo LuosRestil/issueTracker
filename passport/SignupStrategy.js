@@ -7,7 +7,6 @@ const bcrypt = require("bcrypt");
 const SignupStrategy = new LocalStrategy(
   { passReqToCallback: true },
   (req, username, password, done) => {
-    // done args = (error, user, extra data)
     User.findOne({ username: username }, (err, user) => {
       if (err) {
         return done(err, null);

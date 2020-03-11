@@ -17,6 +17,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
+mongoose.set("useCreateIndex", true);
 mongoose.connection.on("connected", () => {
   console.log("Database connction successful!");
 });
