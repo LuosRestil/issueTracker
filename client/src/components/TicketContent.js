@@ -2,12 +2,21 @@ import React from "react";
 
 const TicketContent = props => {
   return (
-    <div>
+    <div className="ticket-content">
       {props.issues.length < 1 ? (
         <div>No tickets found.</div>
       ) : (
         props.issues.map(issue => (
-          <div className="issueTile" key={issue._id}>
+          <div
+            className={
+              issue.status === "new"
+                ? "issue-tile-new"
+                : issue.status == "closed"
+                ? "issue-tile-closed"
+                : "issue-tile"
+            }
+            key={issue._id}
+          >
             <p>Ticket ID: {issue._id}</p>
             <h2>
               {issue.title} - ({issue.status})
@@ -15,6 +24,12 @@ const TicketContent = props => {
             <p>{issue.text}</p>
             <p>Department: {issue.department}</p>
             <p>Created by: {issue.createdBy}</p>
+            <p>
+              Opened:{" "}
+              {issue.dateTimeCreated.split("T")[0] +
+                " at " +
+                issue.dateTimeCreated.split("T")[1].slice(0, 5)}
+            </p>
             {issue.assignedTo ? <p>Assigned to: {issue.assignedTo}</p> : null}
 
             {props.user.role === "admin" ? (
