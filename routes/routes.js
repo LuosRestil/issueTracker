@@ -142,8 +142,51 @@ router.get("/getUserIssues/:id", ensureAuth, (req, res) => {
   }
 });
 
+router.get("/getIssuesByUser/:username", ensureAuth, (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(401).send({ error: "Access unauthorized." });
+  } else {
+    console.log("admin...");
+    User.findOne({ username: req.params.username }, (err, data) => {
+      if (err) {
+        console.log("error");
+        return res.send({ error: err });
+      } else if (data) {
+        if (data.role === "user") {
+          Issue.find(
+            { createdBy: req.params.username },
+            null,
+            { sort: { dateTimeCreated: -1 } },
+            (err, data) => {
+              if (err) {
+                return res.send({ error: err });
+              } else {
+                return res.send({ data: data });
+              }
+            }
+          );
+        } else {
+          Issue.find(
+            { assignedTo: req.params.username },
+            null,
+            { sort: { dateTimeCreated: -1 } },
+            (err, data) => {
+              if (err) {
+                return res.send({ error: err });
+              } else {
+                return res.send({ data: data });
+              }
+            }
+          );
+        }
+      } else {
+        return res.send({ error: "No such user found." });
+      }
+    });
+  }
+});
+
 router.post("/submitIssue", ensureAuth, (req, res) => {
-  console.log(req.body);
   const newIssue = new Issue({
     department: req.body.department,
     title: req.body.title,

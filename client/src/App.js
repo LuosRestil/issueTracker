@@ -7,6 +7,7 @@ import Nav from "./components/Nav/Nav";
 import SubmitIssue from "./components/SubmitIssue";
 import AllTickets from "./components/AllTickets";
 import DeptTickets from "./components/DeptTickets";
+import UserSearch from "./components/UserSearch";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
@@ -91,6 +92,14 @@ function App() {
           <ProtectedRoute
             path="/tickets/:department"
             component={DeptTickets}
+            logged={logged}
+            setLogged={setLogged}
+            user={user}
+            support={support}
+          />
+          <ProtectedRoute
+            path="/userSearch"
+            component={UserSearch}
             logged={logged}
             setLogged={setLogged}
             user={user}

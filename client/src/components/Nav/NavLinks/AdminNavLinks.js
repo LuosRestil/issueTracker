@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 const AdminNavLinks = props => {
   return (
     <ul className="navbar-nav ml-auto">
+      <li>
+        <Link className="nav-link" to="/userSearch">
+          User Search
+        </Link>
+      </li>
       <li className="nav-item dropdown">
         <button
           className="dropdown-toggle btn btn-link"

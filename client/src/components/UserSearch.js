@@ -1,38 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import TicketContent from "./TicketContent";
 
-function Dashboard(props) {
+const UserSearch = props => {
   let [issues, setIssues] = useState([]);
   let [assignment, setAssignment] = useState("");
+  let [search, setSearch] = useState("");
+  let [flashError, setFlashError] = useState("");
 
-  let flashError;
-  try {
-    flashError = props.location.state.flashError;
-  } catch {}
-
-  useEffect(() => {
-    if (props.user.role === "user") {
-      getIssuesByUser();
-    } else if (props.user.role === "support" || props.user.role === "admin") {
-      getIssuesBySupport();
-    }
-  }, [props]);
-
-  const getIssuesByUser = () => {
-    fetch(`/api/getUserIssues/${props.user._id}`)
-      .then(response => response.json())
-      .then(json => {
-        if (json.error) {
-          console.log(json.error);
-        } else if (json.data) {
-          setIssues(json.data);
-        }
-      });
-  };
-
-  const getIssuesBySupport = () => {
-    fetch(`/api/getSupportIssues/${props.user._id}`)
+  const getIssues = () => {
+    fetch(`/api/getIssues/${props.match.params.department}`)
       .then(response => response.json())
       .then(json => {
         if (json.error) {
@@ -61,8 +38,7 @@ function Dashboard(props) {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
-          console.log(props.history);
-          getIssuesBySupport();
+          getIssues();
         }
       })
       .catch(err => {
@@ -84,7 +60,7 @@ function Dashboard(props) {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
-          getIssuesBySupport();
+          getIssues();
         }
       });
   };
@@ -97,7 +73,7 @@ function Dashboard(props) {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
-          getIssuesBySupport();
+          getIssues();
         }
       });
   };
@@ -111,12 +87,23 @@ function Dashboard(props) {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
-          console.log(json.msg);
-          if (props.user.role === "user") {
-            getIssuesByUser();
-          } else {
-            getIssuesBySupport();
-          }
+          getIssues();
+        }
+      });
+  };
+
+  const searchByUser = e => {
+    e.preventDefault();
+    fetch(`/api/getIssuesByUser/${search}`)
+      .then(response => response.json())
+      .then(json => {
+        setSearch("");
+        if (json.error) {
+          setFlashError(json.error);
+          console.log(json.error);
+        } else if (json.data) {
+          setFlashError("");
+          setIssues(json.data);
         }
       });
   };
@@ -130,13 +117,39 @@ function Dashboard(props) {
         }}
       />
     );
+  } else if (props.user.role === "user" || props.user.role === "support") {
+    return (
+      <Redirect
+        to={{
+          pathname: "/",
+          state: { flashError: "You are not authorized to view that page." }
+        }}
+      />
+    );
   } else {
     return (
       <div>
         {flashError ? (
           <div className="alert alert-danger">{flashError}</div>
         ) : null}
-        <h1>My Tickets</h1>
+        <h1>Search By User</h1>
+        <form onSubmit={searchByUser} className="mb-3">
+          <div className="form-group">
+            <label htmlFor="searchField">Search By Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="usernameField"
+              onChange={e => setSearch(e.target.value)}
+              value={search}
+              autoFocus
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Search
+          </button>
+        </form>
         <TicketContent
           handleClaim={handleClaim}
           deleteTicket={deleteTicket}
@@ -150,6 +163,6 @@ function Dashboard(props) {
       </div>
     );
   }
-}
+};
 
-export default Dashboard;
+export default UserSearch;
