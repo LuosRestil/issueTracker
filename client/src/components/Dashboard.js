@@ -59,9 +59,7 @@ function Dashboard(props) {
         // Select element not resetting
         setAssignment("DEFAULT");
         if (json.error) {
-          console.log(json.error);
         } else if (json.msg) {
-          console.log(props.history);
           getIssuesBySupport();
         }
       })
@@ -103,7 +101,6 @@ function Dashboard(props) {
   };
 
   const deleteTicket = e => {
-    console.log("deleting ticket");
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/deleteIssue/${id}`, { method: "DELETE" })
       .then(response => response.json())
@@ -111,7 +108,6 @@ function Dashboard(props) {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
-          console.log(json.msg);
           if (props.user.role === "user") {
             getIssuesByUser();
           } else {

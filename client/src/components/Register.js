@@ -39,7 +39,6 @@ function Register(props) {
   };
 
   if (redirect.redirect) {
-    console.log("redirecting to login...");
     return (
       <Redirect
         to={{
@@ -49,7 +48,6 @@ function Register(props) {
       />
     );
   } else {
-    console.log("not redirecting to login...");
     return (
       <div>
         <h1>Registration</h1>

@@ -122,7 +122,6 @@ router.get("/getSupportIssues/:id", ensureAuth, (req, res) => {
 
 router.get("/getUserIssues/:id", ensureAuth, (req, res) => {
   if (req.user._id != req.params.id) {
-    console.log("id does not match requested tickets...");
     return res
       .status(401)
       .send({ error: "ID does not match requested support tickets." });

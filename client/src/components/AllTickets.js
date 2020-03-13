@@ -3,12 +3,10 @@ import { Redirect } from "react-router-dom";
 import TicketContent from "./TicketContent";
 
 const AllTickets = props => {
-  console.log("in AllTickets route...");
   let [issues, setIssues] = useState([]);
   let [assignment, setAssignment] = useState("");
 
   useEffect(() => {
-    console.log("allTickets useEffect...");
     getIssues();
   }, []);
 
