@@ -37,7 +37,7 @@ function Login(props) {
           props.location.state.flashSuccess = "";
           setFlashError(json.error);
         } else if (json.user) {
-          window.localStorage.setItem("qrs", json._id);
+          window.localStorage.setItem("qrs", json.user);
           props.setLogged(true);
           setRedirect({
             redirect: true,
