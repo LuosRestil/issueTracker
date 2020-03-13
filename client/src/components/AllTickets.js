@@ -72,9 +72,7 @@ const AllTickets = props => {
 
   const closeTicket = e => {
     e.preventDefault();
-    let id =
-      e.target.parentElement.parentElement.childNodes[0].childNodes[1]
-        .textContent;
+    let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/closeIssue/${id}`)
       .then(response => response.json())
       .then(json => {
