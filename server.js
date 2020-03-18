@@ -38,6 +38,17 @@ app.use(morgan("tiny"));
 app.use("/api", routes);
 
 if (process.env.NODE_ENV == "production") {
+  console.log("process.env.NODE_ENV == production");
+  app.get("*", function(req, res) {
+    console.log("hitting * route");
+    res.sendFile(path.join(__dirname, "path/to/your/index.html"), function(
+      err
+    ) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    });
+  });
   app.use(express.static("client/build"));
 }
 
