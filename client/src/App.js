@@ -9,6 +9,7 @@ import AllTickets from "./components/AllTickets";
 import DeptTickets from "./components/DeptTickets";
 import UserSearch from "./components/UserSearch";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./components/NotFound";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 function App() {
@@ -105,6 +106,7 @@ function App() {
             user={user}
             support={support}
           />
+          <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
     </div>
