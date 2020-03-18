@@ -2,6 +2,24 @@
   text-align: center;
 }
 
+.navbar-brand {
+  font-family: "Kaushan Script", cursive;
+  font-size: 2rem;
+}
+
+.username {
+  color: white;
+  margin-bottom: 0px;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
 form {
   width: 80%;
   max-width: 600px;
@@ -27,6 +45,7 @@ ul {
   margin: 1rem;
   padding: 2rem;
   max-width: 500px;
+  overflow: hidden;
 }
 
 .issue-tile-new {
@@ -36,6 +55,7 @@ ul {
   margin: 1rem;
   padding: 2rem;
   max-width: 500px;
+  overflow: hidden;
 }
 
 .issue-tile-closed {
@@ -46,6 +66,7 @@ ul {
   margin: 1rem;
   padding: 2rem;
   max-width: 500px;
+  overflow: hidden;
 }
 
 .btn-link {

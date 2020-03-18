@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 function Register(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState({
     redirect: false,
     path: "",
@@ -16,7 +17,11 @@ function Register(props) {
     let options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username, password: password })
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        email: email
+      })
     };
     fetch("/api/register", options)
       .then(response => response.json())
@@ -25,7 +30,7 @@ function Register(props) {
         setPassword("");
         if (json.error) {
           setFlashError(json.error);
-        } else if (json.user) {
+        } else if (json.msg) {
           setRedirect({
             redirect: true,
             path: "/login",
@@ -50,28 +55,38 @@ function Register(props) {
   } else {
     return (
       <div>
-        <h1>Registration</h1>
+        <h1 className="mt-3">Registration</h1>
         {flashError ? (
           <div className="alert alert-danger">{flashError}</div>
         ) : null}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Username</label>
+            <label htmlFor="usernameField">Username</label>
             <input
               type="username"
               className="form-control"
-              id="exampleInputEmail1"
+              id="usernameField"
               onChange={e => setUsername(e.target.value)}
               value={username}
               autoFocus
             />
           </div>
           <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
+            <label htmlFor="emailField">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="emailField"
+              onChange={e => setEmail(e.target.value)}
+              value={email}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="passwordField">Password</label>
             <input
               type="password"
               className="form-control"
-              id="exampleInputPassword1"
+              id="passwordField"
               onChange={e => setPassword(e.target.value)}
               value={password}
             />
@@ -80,6 +95,9 @@ function Register(props) {
             Submit
           </button>
         </form>
+        <p className="mt-4">
+          Already have an account? <a href="/login">Log in</a>.
+        </p>
       </div>
     );
   }

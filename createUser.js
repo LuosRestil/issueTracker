@@ -9,16 +9,18 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 mongoose.set("useCreateIndex", true);
 mongoose.connection.on("connected", () => {
-  console.log("Database connction successful!");
+  console.log("Database connection successful!");
 });
 
 let username = process.argv[2];
-let password = process.argv[3];
-let role = process.argv[4];
+let email = process.argv[3];
+let password = process.argv[4];
+let role = process.argv[5];
 let pw_hash = bcrypt.hashSync(password, 10);
 
 const newUser = new User({
   username: username,
+  email: email,
   password: pw_hash,
   role: role
 });

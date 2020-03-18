@@ -4,11 +4,11 @@ import TicketContent from "./TicketContent";
 
 const AllTickets = props => {
   let [issues, setIssues] = useState([]);
-  let [assignment, setAssignment] = useState("");
+  let [assignment, setAssignment] = useState({});
 
   useEffect(() => {
     getIssues();
-  }, []);
+  }, [assignment]);
 
   const getIssues = () => {
     fetch("/api/getAllIssues")
@@ -24,26 +24,27 @@ const AllTickets = props => {
 
   const handleAssignment = e => {
     e.preventDefault();
+    let jsonAssignment = JSON.parse(assignment);
     let id =
       e.target.parentElement.parentElement.childNodes[0].childNodes[1]
         .textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: assignment })
+      body: JSON.stringify({ assignment: jsonAssignment })
     };
     fetch(`/api/assignment/${id}`, options)
       .then(response => response.json())
       .then(json => {
-        // Select element not resetting
-        setAssignment("DEFAULT");
         if (json.error) {
-          console.log(json.error);
+          console.log(`error: ${JSON.stringify(json.error)}`);
         } else if (json.msg) {
+          console.log("successful assign and reload");
           getIssues();
         }
       })
       .catch(err => {
+        console.log(`catch: ${err}`);
         console.log(err);
       });
   };
@@ -54,7 +55,7 @@ const AllTickets = props => {
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ claim: props.user.username })
+      body: JSON.stringify({ claim: props.user })
     };
     fetch(`/api/claimIssue/${id}`, options)
       .then(response => response.json())
@@ -118,7 +119,7 @@ const AllTickets = props => {
   } else {
     return (
       <div>
-        <h1>All Tickets</h1>
+        <h1 className="mt-3">All Tickets</h1>
         <TicketContent
           handleClaim={handleClaim}
           deleteTicket={deleteTicket}

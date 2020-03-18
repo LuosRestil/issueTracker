@@ -22,19 +22,20 @@ const UserSearch = props => {
 
   const handleAssignment = e => {
     e.preventDefault();
+    let jsonAssignment = JSON.parse(assignment);
     let id =
       e.target.parentElement.parentElement.childNodes[0].childNodes[1]
         .textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: assignment })
+      body: JSON.stringify({ assignment: jsonAssignment })
     };
     fetch(`/api/assignment/${id}`, options)
       .then(response => response.json())
       .then(json => {
         // Select element not resetting
-        setAssignment("DEFAULT");
+        // setAssignment("DEFAULT");
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -131,7 +132,7 @@ const UserSearch = props => {
         {flashError ? (
           <div className="alert alert-danger">{flashError}</div>
         ) : null}
-        <h1>Search By User</h1>
+        <h1 className="mt-3">Search By User</h1>
         <form onSubmit={searchByUser} className="mb-3">
           <div className="form-group">
             <label htmlFor="searchField">Search By Username</label>

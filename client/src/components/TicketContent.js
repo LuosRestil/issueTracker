@@ -11,7 +11,7 @@ const TicketContent = props => {
             className={
               issue.status === "new"
                 ? "issue-tile-new"
-                : issue.status == "closed"
+                : issue.status === "closed"
                 ? "issue-tile-closed"
                 : "issue-tile"
             }
@@ -23,15 +23,21 @@ const TicketContent = props => {
             </h2>
             <p>{issue.text}</p>
             <p>Department: {issue.department}</p>
-            <p>Created by: {issue.createdBy}</p>
+            <p>
+              Created by: {issue.createdBy.username}, {issue.createdBy.email}
+            </p>
             <p>
               Opened:{" "}
               {issue.dateTimeCreated.split("T")[0] +
                 " at " +
                 issue.dateTimeCreated.split("T")[1].slice(0, 5)}
-            </p>
-            {issue.assignedTo ? <p>Assigned to: {issue.assignedTo}</p> : null}
-
+            </p>{" "}
+            {issue.assignedTo ? (
+              <p>
+                Assigned to: {issue.assignedTo.username},
+                {issue.assignedTo.email}
+              </p>
+            ) : null}
             {props.user.role === "admin" ? (
               <div>
                 {issue.status === "closed" ? null : issue.assignedTo ? (
@@ -49,8 +55,8 @@ const TicketContent = props => {
                           Select Technician
                         </option>
                         {props.support.map(s => (
-                          <option value={s} key={s}>
-                            {s}
+                          <option value={JSON.stringify(s)} key={s.username}>
+                            {s.username}
                           </option>
                         ))}
                       </select>
@@ -74,8 +80,8 @@ const TicketContent = props => {
                           Select Technician
                         </option>
                         {props.support.map(s => (
-                          <option value={s} key={s}>
-                            {s}
+                          <option value={JSON.stringify(s)} key={s.username}>
+                            {s.username}
                           </option>
                         ))}
                       </select>
@@ -90,8 +96,8 @@ const TicketContent = props => {
                 Claim
               </button>
             ) : null}
-            {issue.status === "closed" ? null : props.user.role !== "user" &&
-              issue.assignedTo === props.user.username ? (
+            {issue.status === "closed" ? null : !issue.assignedTo ? null : issue
+                .assignedTo.username === props.user.username ? (
               <button
                 className="btn btn-primary m-2"
                 onClick={props.closeTicket}
@@ -101,7 +107,7 @@ const TicketContent = props => {
             ) : null}
             {props.user.role === "admin" ||
             (props.user.role === "user" &&
-              issue.createdBy === props.user.username) ? (
+              issue.createdBy.username === props.user.username) ? (
               <button
                 className="btn btn-danger m-2"
                 onClick={props.deleteTicket}

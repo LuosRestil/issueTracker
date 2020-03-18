@@ -11,12 +11,8 @@ passport.deserializeUser(function(_id, done) {
   });
 });
 
-// import strategies
-// signup strategy takes care of registering user. NOT NECESSARY.
-const SignUpStrategy = require("./SignupStrategy");
 const SignInStrategy = require("./SigninStrategy");
 
 passport.use("local-signin", SignInStrategy);
-passport.use("local-signup", SignUpStrategy);
 
 module.exports = passport;

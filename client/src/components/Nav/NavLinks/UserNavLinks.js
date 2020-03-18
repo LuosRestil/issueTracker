@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 const UserNavLinks = props => {
   return (
     <ul className="navbar-nav ml-auto">
+      <Link className="nav-link" to="/">
+        Home
+      </Link>
       <li className="nav-item">
         <Link className="nav-link" to="/submitIssue">
           New Support Ticket

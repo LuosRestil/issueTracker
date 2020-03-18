@@ -5,6 +5,9 @@ const AdminNavLinks = props => {
   return (
     <ul className="navbar-nav ml-auto">
       <li>
+        <Link className="nav-link" to="/">
+          Home
+        </Link>
         <Link className="nav-link" to="/userSearch">
           User Search
         </Link>

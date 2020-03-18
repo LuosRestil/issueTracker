@@ -67,7 +67,7 @@ function Login(props) {
         ) : flashInfo ? (
           <div className="alert alert-info">{flashInfo}</div>
         ) : null}
-        <h1>Login</h1>
+        <h1 className="mt-3">Login</h1>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="usernameField">Username</label>
@@ -94,6 +94,9 @@ function Login(props) {
             Submit
           </button>
         </form>
+        <p className="mt-4">
+          Don't have an account yet? <a href="/register">Register</a>.
+        </p>
       </div>
     );
   }

@@ -51,7 +51,7 @@ function SubmitIssue(props) {
   } else {
     return (
       <div>
-        <h1>Submit Support Ticket</h1>
+        <h1 className="mt-3">Submit Support Ticket</h1>
         {flashError ? (
           <div className="alert alert-danger">{flashError}</div>
         ) : null}

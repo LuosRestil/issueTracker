@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 const SupportNavLinks = props => {
   return (
     <ul className="navbar-nav ml-auto">
+      <Link className="nav-link" to="/">
+        Home
+      </Link>
       <li className="nav-item dropdown">
         <button
           className="dropdown-toggle btn btn-link"

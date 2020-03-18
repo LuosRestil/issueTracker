@@ -24,19 +24,20 @@ const DeptTickets = props => {
 
   const handleAssignment = e => {
     e.preventDefault();
+    let jsonAssignment = JSON.parse(assignment);
     let id =
       e.target.parentElement.parentElement.childNodes[0].childNodes[1]
         .textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: assignment })
+      body: JSON.stringify({ assignment: jsonAssignment })
     };
     fetch(`/api/assignment/${id}`, options)
       .then(response => response.json())
       .then(json => {
         // Select element not resetting
-        setAssignment("DEFAULT");
+        // setAssignment("DEFAULT");
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -54,7 +55,7 @@ const DeptTickets = props => {
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ claim: props.user.username })
+      body: JSON.stringify({ claim: props.user })
     };
     fetch(`/api/claimIssue/${id}`, options)
       .then(response => response.json())
@@ -114,7 +115,7 @@ const DeptTickets = props => {
   } else {
     return (
       <div>
-        <h1>
+        <h1 className="mt-3">
           {props.match.params.department[0].toUpperCase() +
             props.match.params.department.slice(1)}
         </h1>

@@ -45,19 +45,20 @@ function Dashboard(props) {
 
   const handleAssignment = e => {
     e.preventDefault();
+    let jsonAssignment = JSON.parse(assignment);
     let id =
       e.target.parentElement.parentElement.childNodes[0].childNodes[1]
         .textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: assignment })
+      body: JSON.stringify({ assignment: jsonAssignment })
     };
     fetch(`/api/assignment/${id}`, options)
       .then(response => response.json())
       .then(json => {
         // Select element not resetting
-        setAssignment("DEFAULT");
+        // setAssignment("DEFAULT");
         if (json.error) {
         } else if (json.msg) {
           getIssuesBySupport();
@@ -74,7 +75,7 @@ function Dashboard(props) {
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ claim: props.user.username })
+      body: JSON.stringify({ claim: props.user })
     };
     fetch(`/api/claimIssue/${id}`, options)
       .then(response => response.json())
@@ -132,7 +133,7 @@ function Dashboard(props) {
         {flashError ? (
           <div className="alert alert-danger">{flashError}</div>
         ) : null}
-        <h1>My Tickets</h1>
+        <h1 className="mt-3">My Tickets</h1>
         <TicketContent
           handleClaim={handleClaim}
           deleteTicket={deleteTicket}

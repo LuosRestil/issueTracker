@@ -5,8 +5,11 @@ const IssueSchema = new Schema({
   department: { type: String, required: true },
   title: { type: String, required: true },
   text: { type: String, required: true },
-  createdBy: { type: String, required: true },
-  assignedTo: { type: String },
+  createdBy: {
+    username: { type: String, required: true },
+    email: { type: String, required: true }
+  },
+  assignedTo: { username: String, email: String },
   status: { type: String, default: "new" },
   dateTimeCreated: { type: Date, default: Date.now() }
 });
