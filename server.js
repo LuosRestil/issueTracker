@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cookieSession = require("cookie-session");
-// const passport = require('passport');
 const passport = require("./passport/");
+const path = require("path");
 
 const routes = require("./routes/routes");
 
@@ -39,9 +39,10 @@ app.use("/api", routes);
 
 if (process.env.NODE_ENV == "production") {
   console.log("process.env.NODE_ENV == production");
+  app.use(express.static("client/build"));
   app.get("*", function(req, res) {
     console.log("hitting * route");
-    res.sendFile(path.join(__dirname, "path/to/your/index.html"), function(
+    res.sendFile(path.join(__dirname, "/client/build/index.html"), function(
       err
     ) {
       if (err) {
@@ -49,7 +50,6 @@ if (process.env.NODE_ENV == "production") {
       }
     });
   });
-  app.use(express.static("client/build"));
 }
 
 app.listen(PORT, console.log(`Express server listening on port ${PORT}`));
