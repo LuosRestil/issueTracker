@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 function Login(props) {
   const [username, setUsername] = useState("");
@@ -95,7 +95,7 @@ function Login(props) {
           </button>
         </form>
         <p className="mt-4">
-          Don't have an account yet? <a href="/register">Register</a>.
+          Don't have an account yet? <Link to="/register">Register</Link>.
         </p>
       </div>
     );
