@@ -12,6 +12,10 @@
   margin-bottom: 0px;
 }
 
+.bg-nav {
+  background-color: rgb(17, 88, 23);
+}
+
 .nav-link {
   color: white !important;
 }

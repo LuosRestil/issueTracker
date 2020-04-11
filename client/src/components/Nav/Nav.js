@@ -5,7 +5,7 @@ import AdminNavLinks from "./NavLinks/AdminNavLinks";
 import SupportNavLinks from "./NavLinks/SupportNavLinks";
 import UserNavLinks from "./NavLinks/UserNavLinks";
 
-const Nav = props => {
+const Nav = (props) => {
   const logout = () => {
     fetch("/api/logout").then(() => {
       window.localStorage.removeItem("qrs");
@@ -14,7 +14,7 @@ const Nav = props => {
   };
 
   return (
-    <nav className="navbar navbar-expand-xs navbar-dark bg-primary">
+    <nav className="navbar navbar-expand-md navbar-dark bg-nav">
       <Link to="/" className="navbar-brand">
         Help Desk
       </Link>
