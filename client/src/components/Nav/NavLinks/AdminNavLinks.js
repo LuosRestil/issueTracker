@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AdminNavLinks = props => {
+const AdminNavLinks = (props) => {
   return (
     <ul className="navbar-nav ml-auto">
       <li>
@@ -22,21 +22,21 @@ const AdminNavLinks = props => {
         >
           Departments
         </button>
-        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-          <Link className="dropdown-item" to="/tickets/all">
+        <div className="dropdown-menu bg-nav" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item white" to="/tickets/all">
             All
           </Link>
           <div className="dropdown-divider"></div>
-          <Link className="dropdown-item" to="/tickets/hardware">
+          <Link className="dropdown-item white" to="/tickets/hardware">
             Hardware
           </Link>
-          <Link className="dropdown-item" to="/tickets/software">
+          <Link className="dropdown-item white" to="/tickets/software">
             Software
           </Link>
-          <Link className="dropdown-item" to="/tickets/janitorial">
+          <Link className="dropdown-item white" to="/tickets/janitorial">
             Janitorial
           </Link>
-          <Link className="dropdown-item" to="/tickets/other">
+          <Link className="dropdown-item white" to="/tickets/other">
             Other
           </Link>
         </div>
