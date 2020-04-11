@@ -22,21 +22,21 @@ const AdminNavLinks = (props) => {
         >
           Departments
         </button>
-        <div className="dropdown-menu bg-nav" aria-labelledby="navbarDropdown">
-          <Link className="dropdown-item white" to="/tickets/all">
+        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+          <Link className="dropdown-item" to="/tickets/all">
             All
           </Link>
           <div className="dropdown-divider"></div>
-          <Link className="dropdown-item white" to="/tickets/hardware">
+          <Link className="dropdown-item" to="/tickets/hardware">
             Hardware
           </Link>
-          <Link className="dropdown-item white" to="/tickets/software">
+          <Link className="dropdown-item" to="/tickets/software">
             Software
           </Link>
-          <Link className="dropdown-item white" to="/tickets/janitorial">
+          <Link className="dropdown-item" to="/tickets/janitorial">
             Janitorial
           </Link>
-          <Link className="dropdown-item white" to="/tickets/other">
+          <Link className="dropdown-item" to="/tickets/other">
             Other
           </Link>
         </div>

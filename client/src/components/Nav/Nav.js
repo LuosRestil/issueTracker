@@ -14,7 +14,7 @@ const Nav = (props) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-xs navbar-dark bg-nav">
+    <nav className="navbar navbar-expand-xs navbar-dark bg-dark">
       <Link to="/" className="navbar-brand">
         Help Desk
       </Link>
