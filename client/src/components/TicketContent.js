@@ -1,12 +1,12 @@
 import React from "react";
 
-const TicketContent = props => {
+const TicketContent = (props) => {
   return (
     <div className="ticket-content">
       {props.issues.length < 1 ? (
         <div>No tickets found.</div>
       ) : (
-        props.issues.map(issue => (
+        props.issues.map((issue) => (
           <div
             className={
               issue.status === "new"
@@ -34,7 +34,7 @@ const TicketContent = props => {
             </p>{" "}
             {issue.assignedTo ? (
               <p>
-                Assigned to: {issue.assignedTo.username},
+                Assigned to: {issue.assignedTo.username},{" "}
                 {issue.assignedTo.email}
               </p>
             ) : null}
@@ -48,13 +48,13 @@ const TicketContent = props => {
                         className="form-control"
                         id="assignSelect"
                         defaultValue={"DEFAULT"}
-                        onChange={e => props.setAssignment(e.target.value)}
+                        onChange={(e) => props.setAssignment(e.target.value)}
                         required
                       >
                         <option value="DEFAULT" disabled>
                           Select Technician
                         </option>
-                        {props.support.map(s => (
+                        {props.support.map((s) => (
                           <option value={JSON.stringify(s)} key={s.username}>
                             {s.username}
                           </option>
@@ -73,13 +73,13 @@ const TicketContent = props => {
                         className="form-control"
                         id="assignSelect"
                         defaultValue={"DEFAULT"}
-                        onChange={e => props.setAssignment(e.target.value)}
+                        onChange={(e) => props.setAssignment(e.target.value)}
                         required
                       >
                         <option value="DEFAULT" disabled>
                           Select Technician
                         </option>
-                        {props.support.map(s => (
+                        {props.support.map((s) => (
                           <option value={JSON.stringify(s)} key={s.username}>
                             {s.username}
                           </option>
