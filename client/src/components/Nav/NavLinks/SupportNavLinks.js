@@ -1,47 +1,52 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SupportNavLinks = props => {
+const SupportNavLinks = (props) => {
   return (
-    <ul className="navbar-nav ml-auto">
-      <Link className="nav-link" to="/">
-        Home
-      </Link>
-      <li className="nav-item dropdown">
-        <button
-          className="dropdown-toggle btn btn-link"
-          id="navbarDropdown"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Departments
-        </button>
-        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-          <Link className="dropdown-item" to="/tickets/all">
-            All
-          </Link>
-          <div className="dropdown-divider"></div>
-          <Link className="dropdown-item" to="/tickets/hardware">
-            Hardware
-          </Link>
-          <Link className="dropdown-item" to="/tickets/software">
-            Software
-          </Link>
-          <Link className="dropdown-item" to="/tickets/janitorial">
-            Janitorial
-          </Link>
-          <Link className="dropdown-item" to="/tickets/other">
-            Other
-          </Link>
-        </div>
-      </li>
-      <li className="nav-item">
-        <button className="btn btn-link" onClick={props.logout}>
-          Log Out
-        </button>
-      </li>
-    </ul>
+    <div
+      className="collapse navbar-collapse flex-grow-0"
+      id="navbarSupportedContent"
+    >
+      <ul className="navbar-nav ml-auto">
+        <Link className="nav-link" to="/">
+          Home
+        </Link>
+        <li className="nav-item dropdown">
+          <button
+            className="dropdown-toggle btn btn-link"
+            id="navbarDropdown"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Departments
+          </button>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+            <Link className="dropdown-item" to="/tickets/all">
+              All
+            </Link>
+            <div className="dropdown-divider"></div>
+            <Link className="dropdown-item" to="/tickets/hardware">
+              Hardware
+            </Link>
+            <Link className="dropdown-item" to="/tickets/software">
+              Software
+            </Link>
+            <Link className="dropdown-item" to="/tickets/janitorial">
+              Janitorial
+            </Link>
+            <Link className="dropdown-item" to="/tickets/other">
+              Other
+            </Link>
+          </div>
+        </li>
+        <li className="nav-item">
+          <button className="btn btn-link" onClick={props.logout}>
+            Log Out
+          </button>
+        </li>
+      </ul>
+    </div>
   );
 };
 

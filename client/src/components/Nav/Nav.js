@@ -14,12 +14,14 @@ const Nav = (props) => {
   };
 
   return (
-    <nav className="navbar navbar-expand-xs navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link to="/" className="navbar-brand">
         Help Desk
       </Link>
       {props.logged ? (
-        <p className="username ml-auto pr-3">Welcome, {props.user.username}!</p>
+        <p className="username ml-auto mr-3 font-weight-bold">
+          Welcome, {props.user.username}!
+        </p>
       ) : null}
 
       <button
@@ -33,19 +35,18 @@ const Nav = (props) => {
       >
         <span className="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        {!props.logged ? (
-          <UnloggedNavLinks />
-        ) : props.user.role === "user" ? (
-          <UserNavLinks logout={logout} />
-        ) : props.user.role === "support" ? (
-          <SupportNavLinks logout={logout} />
-        ) : props.user.role === "admin" ? (
-          <AdminNavLinks logout={logout} />
-        ) : (
-          "no user role"
-        )}
-      </div>
+
+      {!props.logged ? (
+        <UnloggedNavLinks />
+      ) : props.user.role === "user" ? (
+        <UserNavLinks logout={logout} />
+      ) : props.user.role === "support" ? (
+        <SupportNavLinks logout={logout} />
+      ) : props.user.role === "admin" ? (
+        <AdminNavLinks logout={logout} />
+      ) : (
+        "no user..."
+      )}
     </nav>
   );
 };
