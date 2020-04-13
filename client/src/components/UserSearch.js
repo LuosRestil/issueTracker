@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import TicketContent from "./TicketContent";
 
-const UserSearch = props => {
+const UserSearch = (props) => {
   let [issues, setIssues] = useState([]);
   let [assignment, setAssignment] = useState("");
   let [search, setSearch] = useState("");
@@ -10,8 +10,8 @@ const UserSearch = props => {
 
   const getIssues = () => {
     fetch(`/api/getIssues/${props.match.params.department}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.data) {
@@ -20,7 +20,7 @@ const UserSearch = props => {
       });
   };
 
-  const handleAssignment = e => {
+  const handleAssignment = (e) => {
     e.preventDefault();
     let jsonAssignment = JSON.parse(assignment);
     let id =
@@ -29,35 +29,36 @@ const UserSearch = props => {
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: jsonAssignment })
+      body: JSON.stringify({ assignment: jsonAssignment }),
     };
     fetch(`/api/assignment/${id}`, options)
-      .then(response => response.json())
-      .then(json => {
-        // Select element not resetting
-        // setAssignment("DEFAULT");
+      .then((response) => response.json())
+      .then((json) => {
+        document.querySelectorAll("#assignSelect").forEach((elem) => {
+          elem.value = "DEFAULT";
+        });
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
           getIssues();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleClaim = e => {
+  const handleClaim = (e) => {
     e.preventDefault();
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ claim: props.user.username })
+      body: JSON.stringify({ claim: props.user.username }),
     };
     fetch(`/api/claimIssue/${id}`, options)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -66,11 +67,11 @@ const UserSearch = props => {
       });
   };
 
-  const closeTicket = e => {
+  const closeTicket = (e) => {
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/closeIssue/${id}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -79,11 +80,11 @@ const UserSearch = props => {
       });
   };
 
-  const deleteTicket = e => {
+  const deleteTicket = (e) => {
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/deleteIssue/${id}`, { method: "DELETE" })
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -92,11 +93,11 @@ const UserSearch = props => {
       });
   };
 
-  const searchByUser = e => {
+  const searchByUser = (e) => {
     e.preventDefault();
     fetch(`/api/getIssuesByUser/${search}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         setSearch("");
         if (json.error) {
           setFlashError(json.error);
@@ -113,7 +114,7 @@ const UserSearch = props => {
       <Redirect
         to={{
           pathname: "/login",
-          state: { flashInfo: "Please log in to continue." }
+          state: { flashInfo: "Please log in to continue." },
         }}
       />
     );
@@ -122,7 +123,7 @@ const UserSearch = props => {
       <Redirect
         to={{
           pathname: "/",
-          state: { flashError: "You are not authorized to view that page." }
+          state: { flashError: "You are not authorized to view that page." },
         }}
       />
     );
@@ -140,7 +141,7 @@ const UserSearch = props => {
               type="text"
               className="form-control"
               id="usernameField"
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               value={search}
               autoFocus
               required

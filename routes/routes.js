@@ -81,7 +81,7 @@ router.get("/getSupport", ensureAuth, (req, res) => {
       return res.send(err);
     } else if (data) {
       data = data.map((i) => {
-        return { username: i.username };
+        return { username: i.username, email: i.email };
       });
       return res.send({ support: data });
     }

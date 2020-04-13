@@ -13,6 +13,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     if (props.user.role === "user") {
+      console.log("role === user");
       getIssuesByUser();
     } else if (props.user.role === "support" || props.user.role === "admin") {
       getIssuesBySupport();
@@ -57,9 +58,11 @@ function Dashboard(props) {
     fetch(`/api/assignment/${id}`, options)
       .then((response) => response.json())
       .then((json) => {
-        // Select element not resetting
-        // setAssignment("DEFAULT");
+        document.querySelectorAll("#assignSelect").forEach((elem) => {
+          elem.value = "DEFAULT";
+        });
         if (json.error) {
+          // empty if statement...
         } else if (json.msg) {
           getIssuesBySupport();
         }

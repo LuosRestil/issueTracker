@@ -43,9 +43,7 @@ const Nav = (props) => {
         <SupportNavLinks logout={logout} />
       ) : props.user.role === "admin" ? (
         <AdminNavLinks logout={logout} />
-      ) : (
-        "no user..."
-      )}
+      ) : null}
     </nav>
   );
 };
