@@ -11,15 +11,15 @@ var transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.HDEMAIL,
-    pass: process.env.HDPASS
-  }
+    pass: process.env.HDPASS,
+  },
 });
 
 function ensureAuth(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  return res.send({ error: "Unauthorized" });
+  return res.send({ error: "No user found." });
 }
 
 router.post("/register", (req, res) => {
@@ -33,7 +33,7 @@ router.post("/register", (req, res) => {
       const newUser = new User({
         username: req.body.username,
         email: req.body.email,
-        password: pw_hash
+        password: pw_hash,
       });
       newUser.save((err, user) => {
         if (err) {
@@ -51,11 +51,11 @@ router.post("/login", (req, res, next) => {
   passport.authenticate("local-signin", (err, user) => {
     if (err) {
       return res.status(500).json({
-        error: err
+        error: err,
       });
     }
     // start session, serialize user with passport serialize
-    req.logIn(user, err => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.status(500).json({ error: err });
       }
@@ -254,7 +254,7 @@ router.post("/submitIssue", ensureAuth, (req, res) => {
     department: req.body.department,
     title: req.body.title,
     text: req.body.text,
-    createdBy: { username: req.user.username, email: req.user.email }
+    createdBy: { username: req.user.username, email: req.user.email },
   });
   newIssue.save((err, issue) => {
     if (err) {
@@ -264,16 +264,16 @@ router.post("/submitIssue", ensureAuth, (req, res) => {
         from: "Help Desk",
         to: req.user.email,
         subject: "Support ticket submission",
-        text: `Your support ticket has been successfully submitted! Your reference number is ${issue._id}. You will receive further notifications when the status of your ticket has been updated.\nThank you!\n~Help Desk`
+        text: `Your support ticket has been successfully submitted! Your reference number is ${issue._id}. You will receive further notifications when the status of your ticket has been updated.\nThank you!\n~Help Desk`,
       };
-      transporter.sendMail(mailOptions, function(error, info) {
+      transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
           console.log(error);
           return res.send({ error: error });
         } else {
           console.log("Email sent: " + info.response);
           return res.send({
-            msg: `Issue ${issue._id} submitted successfully.`
+            msg: `Issue ${issue._id} submitted successfully.`,
           });
         }
       });
@@ -303,9 +303,9 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
           {
             assignedTo: {
               username: support.username,
-              email: support.email
+              email: support.email,
             },
-            status: "pending"
+            status: "pending",
           },
           (err, docs) => {
             if (err) {
@@ -317,7 +317,7 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
                   from: "Help Desk",
                   to: toSupport,
                   subject: "New assignment",
-                  text: `You have been assigned a new support ticket with id ${req.params.issueNumber}. Please check your dashboard for more information. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`
+                  text: `You have been assigned a new support ticket with id ${req.params.issueNumber}. Please check your dashboard for more information. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`,
                 };
                 transporter.sendMail(mailOptionsSupport, (err, data) => {
                   if (err) {
@@ -327,7 +327,7 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
                       from: "Help Desk",
                       to: toOldSupport,
                       subject: "Assignment removed",
-                      text: `Your assignment with id ${req.params.issueNumber} has been reassigned to a different member of support staff, and is no longer your responsibility. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`
+                      text: `Your assignment with id ${req.params.issueNumber} has been reassigned to a different member of support staff, and is no longer your responsibility. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`,
                     };
                     transporter.sendMail(mailOptionsOldSupport, (err, data) => {
                       if (err) {
@@ -335,7 +335,7 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
                         return res.send({ error: err });
                       } else {
                         return res.send({
-                          msg: "Assignment/reassignment successful."
+                          msg: "Assignment/reassignment successful.",
                         });
                       }
                     });
@@ -347,7 +347,7 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
                   from: "Help Desk",
                   to: toSupport,
                   subject: "New assignment",
-                  text: `You have been assigned a new support ticket with id ${req.params.issueNumber}. Please check your dashboard for more information. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`
+                  text: `You have been assigned a new support ticket with id ${req.params.issueNumber}. Please check your dashboard for more information. If you have any questions, please contact an administrator.\nThank you!\n~Help Desk`,
                 };
                 transporter.sendMail(mailOptionsSupport, (err, data) => {
                   if (err) {
@@ -357,14 +357,14 @@ router.put("/assignment/:issueNumber", ensureAuth, (req, res) => {
                       from: "Help Desk",
                       to: toUser,
                       subject: "Support ticket update",
-                      text: `Your support ticket with id ${req.params.issueNumber} has been assigned to a member of support staff, and will be resolved as soon as possible!\nThank you!\n~Help Desk`
+                      text: `Your support ticket with id ${req.params.issueNumber} has been assigned to a member of support staff, and will be resolved as soon as possible!\nThank you!\n~Help Desk`,
                     };
                     transporter.sendMail(mailOptionsUser, (err, data) => {
                       if (err) {
                         return res.send({ error: err });
                       } else {
                         return res.send({
-                          msg: "Assignment/reassignment successful."
+                          msg: "Assignment/reassignment successful.",
                         });
                       }
                     });
@@ -391,9 +391,9 @@ router.put("/claimIssue/:issueNumber", ensureAuth, (req, res) => {
         {
           assignedTo: {
             username: req.body.claim.username,
-            email: req.body.claim.email
+            email: req.body.claim.email,
           },
-          status: "pending"
+          status: "pending",
         },
         (err, docs) => {
           if (err) {
@@ -403,14 +403,14 @@ router.put("/claimIssue/:issueNumber", ensureAuth, (req, res) => {
               from: "Help Desk",
               to: toUser,
               subject: "Support ticket update",
-              text: `Your support ticket with id ${req.params.issueNumber} has been assigned to a member of support staff, and will be resolved as soon as possible!\nThank you!\n~Help Desk`
+              text: `Your support ticket with id ${req.params.issueNumber} has been assigned to a member of support staff, and will be resolved as soon as possible!\nThank you!\n~Help Desk`,
             };
             transporter.sendMail(mailOptionsUser, (err, data) => {
               if (err) {
                 return res.send({ error: err });
               } else {
                 return res.send({
-                  msg: "Claim successful!"
+                  msg: "Claim successful!",
                 });
               }
             });
@@ -442,14 +442,14 @@ router.get("/closeIssue/:issueNumber", ensureAuth, (req, res) => {
                 from: "Help Desk",
                 to: toUser,
                 subject: "Support ticket update",
-                text: `Your support ticket with id ${req.params.issueNumber} has been closed! If you have you feel the issue has not been resolved to your satisfaction, please reach out to us and let us know.\nThank you!\n~Help Desk`
+                text: `Your support ticket with id ${req.params.issueNumber} has been closed! If you have you feel the issue has not been resolved to your satisfaction, please reach out to us and let us know.\nThank you!\n~Help Desk`,
               };
               transporter.sendMail(mailOptionsUser, (err, data) => {
                 if (err) {
                   return res.send({ error: err });
                 } else {
                   return res.send({
-                    msg: "Ticket closed successfully!"
+                    msg: "Ticket closed successfully!",
                   });
                 }
               });
@@ -499,7 +499,7 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
                   from: "Help Desk",
                   to: toUser,
                   subject: "Support ticket deleted",
-                  text: `Your support ticket with id ${req.params.issueNumber} has been deleted. If you feel this was done in error, please get in touch with us.\nThank you!\n~Help Desk`
+                  text: `Your support ticket with id ${req.params.issueNumber} has been deleted. If you feel this was done in error, please get in touch with us.\nThank you!\n~Help Desk`,
                 };
                 transporter.sendMail(mailOptionsUser, (err, data) => {
                   if (err) {
@@ -511,7 +511,7 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
                       from: "Help Desk",
                       to: toSupport,
                       subject: "Support Ticket Deleted",
-                      text: `Your support ticket with id ${req.params.issueNumber} has been deleted and is no longer your responsibility. If you have any questions, please contact an administrator.\n~Help Desk`
+                      text: `Your support ticket with id ${req.params.issueNumber} has been deleted and is no longer your responsibility. If you have any questions, please contact an administrator.\n~Help Desk`,
                     };
                     console.log(
                       `mailOptionsSupport == ${JSON.stringify(
@@ -523,7 +523,7 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
                         return res.send({ error: err });
                       } else {
                         return res.send({
-                          msg: "Ticket deleted successfully."
+                          msg: "Ticket deleted successfully.",
                         });
                       }
                     });
@@ -542,14 +542,14 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
                   from: "Help Desk",
                   to: toUser,
                   subject: "Support ticket deleted",
-                  text: `Your support ticket with id ${req.params.issueNumber} has been deleted. If you feel this was done in error, please get in touch with us.\nThank you!\n~Help Desk`
+                  text: `Your support ticket with id ${req.params.issueNumber} has been deleted. If you feel this was done in error, please get in touch with us.\nThank you!\n~Help Desk`,
                 };
                 transporter.sendMail(mailOptionsUser, (err, data) => {
                   if (err) {
                     return res.send({ error: err });
                   } else {
                     return res.send({
-                      msg: "Ticket deleted successfully."
+                      msg: "Ticket deleted successfully.",
                     });
                   }
                 });
@@ -586,14 +586,14 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
                     from: "Help Desk",
                     to: toSupport,
                     subject: "Support Ticket Deleted",
-                    text: `Your support ticket with id ${req.params.issueNumber} has been deleted and is no longer your responsibility. If you have any questions, please contact an administrator.\n~Help Desk`
+                    text: `Your support ticket with id ${req.params.issueNumber} has been deleted and is no longer your responsibility. If you have any questions, please contact an administrator.\n~Help Desk`,
                   };
                   transporter.sendMail(mailOptionsSupport, (err, data) => {
                     if (err) {
                       return res.send({ error: err });
                     } else {
                       return res.send({
-                        msg: "Ticket deleted successfully."
+                        msg: "Ticket deleted successfully.",
                       });
                     }
                   });

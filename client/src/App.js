@@ -20,23 +20,24 @@ function App() {
   useEffect(() => {
     getUser();
     getSupport();
-    if (!window.localStorage.getItem("qrs")) {
-      setLogged(false);
-    }
-  }, [logged]);
+  }, []);
 
   const getUser = () => {
     fetch("/api/getUser")
-      .then(response => response.json())
-      .then(json => {
-        setUser(json);
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          setLogged(false);
+        } else {
+          setUser(json);
+        }
       });
   };
 
   const getSupport = () => {
     fetch("/api/getSupport")
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         setSupport(json.support);
       });
   };
@@ -67,12 +68,12 @@ function App() {
           <Route
             path="/register"
             exact
-            render={props => <Register {...props} logged={logged} />}
+            render={(props) => <Register {...props} logged={logged} />}
           />
           <Route
             path="/login"
             exact
-            render={props => (
+            render={(props) => (
               <Login
                 {...props}
                 logged={logged}
