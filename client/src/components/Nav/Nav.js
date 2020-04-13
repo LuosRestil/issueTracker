@@ -8,7 +8,6 @@ import UserNavLinks from "./NavLinks/UserNavLinks";
 const Nav = (props) => {
   const logout = () => {
     fetch("/api/logout").then(() => {
-      window.localStorage.removeItem("qrs");
       props.setLogged(false);
     });
   };

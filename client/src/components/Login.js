@@ -7,7 +7,7 @@ function Login(props) {
   const [redirect, setRedirect] = useState({
     redirect: false,
     path: "",
-    msg: ""
+    msg: "",
   });
   const [flashError, setFlashError] = useState("");
 
@@ -21,28 +21,27 @@ function Login(props) {
     flashInfo = props.location.state.flashInfo;
   } catch {}
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username, password: password })
+      body: JSON.stringify({ username: username, password: password }),
     };
     fetch("/api/login", options)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         setUsername("");
         setPassword("");
         if (json.error) {
           props.location.state.flashSuccess = "";
           setFlashError(json.error);
         } else if (json.user) {
-          window.localStorage.setItem("qrs", json.user);
           props.setLogged(true);
           setRedirect({
             redirect: true,
             path: "/",
-            msg: "Login successful!"
+            msg: "Login successful!",
           });
         }
       });
@@ -53,7 +52,7 @@ function Login(props) {
       <Redirect
         to={{
           pathname: redirect.path,
-          state: { flashSuccess: redirect.msg }
+          state: { flashSuccess: redirect.msg },
         }}
       />
     );
@@ -75,7 +74,7 @@ function Login(props) {
               type="text"
               className="form-control"
               id="usernameField"
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               value={username}
               autoFocus
             />
@@ -86,7 +85,7 @@ function Login(props) {
               type="password"
               className="form-control"
               id="passwordField"
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
           </div>

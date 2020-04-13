@@ -80,6 +80,9 @@ router.get("/getSupport", ensureAuth, (req, res) => {
     if (err) {
       return res.send(err);
     } else if (data) {
+      data = data.map((i) => {
+        return { username: i.username };
+      });
       return res.send({ support: data });
     }
   });
@@ -143,24 +146,6 @@ router.get("/getIssues/:dept", ensureAuth, (req, res) => {
   } else {
     return res.status(401).send({ error: "Unauthorized route." });
   }
-
-  // if (req.user.role == "admin" || req.user.role == "support") {
-  //   let dept = req.params.dept;
-  //   Issue.find(
-  //     { department: dept },
-  //     null,
-  //     { sort: { dateTimeCreated: -1 } },
-  //     (err, data) => {
-  //       if (err) {
-  //         return res.send({ error: err });
-  //       } else if (data) {
-  //         return res.send({ data: data });
-  //       }
-  //     }
-  //   );
-  // } else {
-  //   return res.status(401).send({ error: "Unauthorized route." });
-  // }
 });
 
 router.get("/getSupportIssues/:id", ensureAuth, (req, res) => {
@@ -209,10 +194,8 @@ router.get("/getIssuesByUser/:username", ensureAuth, (req, res) => {
   if (req.user.role !== "admin") {
     return res.status(401).send({ error: "Access unauthorized." });
   } else {
-    console.log("admin...");
     User.findOne({ username: req.params.username }, (err, data) => {
       if (err) {
-        console.log("error");
         return res.send({ error: err });
       } else if (data) {
         if (data.role === "user") {

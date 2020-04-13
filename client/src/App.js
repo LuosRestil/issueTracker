@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     getUser();
     getSupport();
-  }, []);
+  }, [logged]);
 
   const getUser = () => {
     fetch("/api/getUser")

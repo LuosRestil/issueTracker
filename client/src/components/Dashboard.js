@@ -21,8 +21,8 @@ function Dashboard(props) {
 
   const getIssuesByUser = () => {
     fetch(`/api/getUserIssues/${props.user._id}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.data) {
@@ -33,8 +33,8 @@ function Dashboard(props) {
 
   const getIssuesBySupport = () => {
     fetch(`/api/getSupportIssues/${props.user._id}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.data) {
@@ -43,7 +43,7 @@ function Dashboard(props) {
       });
   };
 
-  const handleAssignment = e => {
+  const handleAssignment = (e) => {
     e.preventDefault();
     let jsonAssignment = JSON.parse(assignment);
     let id =
@@ -52,11 +52,11 @@ function Dashboard(props) {
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ assignment: jsonAssignment })
+      body: JSON.stringify({ assignment: jsonAssignment }),
     };
     fetch(`/api/assignment/${id}`, options)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         // Select element not resetting
         // setAssignment("DEFAULT");
         if (json.error) {
@@ -64,22 +64,22 @@ function Dashboard(props) {
           getIssuesBySupport();
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleClaim = e => {
+  const handleClaim = (e) => {
     e.preventDefault();
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     let options = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ claim: props.user })
+      body: JSON.stringify({ claim: props.user }),
     };
     fetch(`/api/claimIssue/${id}`, options)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -88,11 +88,11 @@ function Dashboard(props) {
       });
   };
 
-  const closeTicket = e => {
+  const closeTicket = (e) => {
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/closeIssue/${id}`)
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -101,11 +101,11 @@ function Dashboard(props) {
       });
   };
 
-  const deleteTicket = e => {
+  const deleteTicket = (e) => {
     let id = e.target.parentElement.childNodes[0].childNodes[1].textContent;
     fetch(`/api/deleteIssue/${id}`, { method: "DELETE" })
-      .then(response => response.json())
-      .then(json => {
+      .then((response) => response.json())
+      .then((json) => {
         if (json.error) {
           console.log(json.error);
         } else if (json.msg) {
@@ -123,7 +123,7 @@ function Dashboard(props) {
       <Redirect
         to={{
           pathname: "/login",
-          state: { flashInfo: "Please log in to continue." }
+          state: { flashInfo: "Please log in to continue." },
         }}
       />
     );
