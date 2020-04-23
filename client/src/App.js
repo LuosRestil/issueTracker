@@ -8,6 +8,8 @@ import SubmitIssue from "./components/SubmitIssue";
 import AllTickets from "./components/AllTickets";
 import DeptTickets from "./components/DeptTickets";
 import UserSearch from "./components/UserSearch";
+import ResetRequest from "./components/ResetRequest";
+import EmailResetPass from "./components/EmailResetPass";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -106,6 +108,15 @@ function App() {
             setLogged={setLogged}
             user={user}
             support={support}
+          />
+          <Route
+            path="/resetRequest"
+            exact
+            render={(props) => <ResetRequest {...props} logged={logged} />}
+          />
+          <Route
+            path="/emailResetPass/:token"
+            render={(props) => <EmailResetPass {...props} logged={logged} />}
           />
           <Route component={NotFound} />
         </Switch>

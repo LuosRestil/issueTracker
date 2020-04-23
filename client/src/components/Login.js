@@ -63,8 +63,6 @@ function Login(props) {
           <div className="alert alert-success">{flashSuccess}</div>
         ) : flashError ? (
           <div className="alert alert-danger">{flashError}</div>
-        ) : flashInfo ? (
-          <div className="alert alert-info">{flashInfo}</div>
         ) : null}
         <h1 className="mt-3">Login</h1>
         <form onSubmit={handleSubmit}>
@@ -93,7 +91,11 @@ function Login(props) {
             Submit
           </button>
         </form>
-        <p className="mt-4">
+        <p className="mt-5">
+          Forgot your password?{" "}
+          <Link to="/resetRequest">Request password reset.</Link>
+        </p>
+        <p className="mt-3">
           Don't have an account yet? <Link to="/register">Register</Link>.
         </p>
       </div>

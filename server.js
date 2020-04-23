@@ -15,11 +15,11 @@ const PORT = process.env.PORT || 8080;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 mongoose.set("useCreateIndex", true);
 mongoose.connection.on("connected", () => {
-  console.log("Database connction successful!");
+  console.log("Database connection successful!");
 });
 
 app.use(helmet());
@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cookieSession({
     name: "session",
-    keys: ["key1", "key2"]
+    keys: ["key1", "key2"],
   })
 );
 app.use(passport.initialize());
@@ -40,9 +40,9 @@ app.use("/api", routes);
 if (process.env.NODE_ENV == "production") {
   console.log("process.env.NODE_ENV == production");
   app.use(express.static("client/build"));
-  app.get("*", function(req, res) {
+  app.get("*", function (req, res) {
     console.log("hitting * route");
-    res.sendFile(path.join(__dirname, "/client/build/index.html"), function(
+    res.sendFile(path.join(__dirname, "/client/build/index.html"), function (
       err
     ) {
       if (err) {

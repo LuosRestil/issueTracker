@@ -88,3 +88,7 @@ ul {
 .white {
   color: white;
 }
+
+.request-reset-success {
+  margin-top: 30vh;
+}

@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const Issue = require("../models/issue");
+const ResetToken = require("../models/resetToken");
 const passport = require("../passport");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 require("dotenv").config();
 
 var transporter = nodemailer.createTransport({
@@ -600,6 +602,103 @@ router.delete("/deleteIssue/:issueNumber", ensureAuth, (req, res) => {
       }
     }
   });
+});
+
+router.post("/resetRequest", (req, res) => {
+  // generate token, add resetToken to db, send email to user
+  if (req.body.email) {
+    User.findOne({ email: req.body.email }, (err, docs) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        if (docs) {
+          // generate token, add resetToken to db, send email to user
+          let resetToken = new ResetToken({
+            userId: docs._id,
+            resetToken: crypto.randomBytes(16).toString("hex"),
+          });
+          resetToken.save((err) => {
+            if (err) {
+              return res.send(err);
+            }
+            ResetToken.deleteOne({
+              userId: docs._id,
+              resetToken: { $ne: resetToken.resetToken },
+            }).exec();
+          });
+          let mailOptions = {
+            to: docs.email,
+            from: "Help Desk",
+            subject: "Password Reset Request",
+            text:
+              "You are receiving this email from Help Desk because you have requested a password reset.\n\n" +
+              "Please click on the following link, or copy it and paste it into your browser, to complete the process:\n\n" +
+              `${req.protocol}` +
+              "://" +
+              req.get("Host") +
+              "/emailResetPass/" +
+              resetToken.resetToken +
+              "\n\n" +
+              "If you did not request this, please ignore this email and your password will remain unchanged.\n",
+          };
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.log(err);
+              return res.send(err);
+            } else {
+              console.log("Email sent: " + info.response);
+              return res.send({
+                msg: `Success.`,
+              });
+            }
+          });
+        } else {
+          return res.send({ error: "Invalid email address." });
+        }
+      }
+    });
+  } else {
+    return res.send({ error: "Email is required." });
+  }
+});
+
+router.post("/emailResetPass", (req, res) => {
+  // check token, reset user pass
+  if (req.body.password !== req.body.confirmPassword) {
+    return res.send({
+      error: "Password confirmation does not match password.",
+    });
+  }
+  if (req.body.token) {
+    ResetToken.findOne({ resetToken: req.body.token }, (err, docs) => {
+      if (err) {
+        return res.send(err);
+      } else {
+        if (docs) {
+          const pw_hash = bcrypt.hashSync(req.body.password, 10);
+          User.findOneAndUpdate(
+            { _id: docs.userId },
+            { password: pw_hash },
+            (err, docs) => {
+              if (err) {
+                return res.send(err);
+              } else {
+                console.log(docs);
+                return res.send({
+                  msg:
+                    "Your password has been successfully reset. You may now log in.",
+                });
+              }
+            }
+          );
+        } else {
+          return res.send({ error: "Unauthorized or expired URL." });
+        }
+      }
+    });
+  } else {
+    return res.status(500).send({ error: "Unauthorized URL." });
+  }
 });
 
 module.exports = router;
