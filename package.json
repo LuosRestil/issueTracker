@@ -15,7 +15,7 @@
   "author": "Brian Smith",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
